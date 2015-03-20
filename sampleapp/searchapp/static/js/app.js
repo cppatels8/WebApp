@@ -10,12 +10,57 @@ $(document).ready(function(){
 		return formData;
 	}
 	
+	function make_url_params(params){
+		var url_params = "?";
+		$.each( params, function( key, value ) {
+			if (value){
+				url_params += key + "=" + value+ "&" ;
+			}
+		});
+		return url_params
+	}
+	
+	$('.submit-mp-data').click(function(e) {
+		e.preventDefault();
+		var url = window.location.origin + '/api/v1/mpattendence/?format=json',
+			header = {"content_types": "application/json"},
+			data = getFromData('.create-mp-data-form');
+		
+		var jqXHR = $.ajax({
+				url: url,
+				method: "POST",
+				data: JSON.stringify(data),
+				contentType: "application/json",
+				success: function(){
+					$('#addMpData').modal('hide');
+					alert("Success: Added successfuly");
+				},
+				error: function(jqXHR){
+					$('#addMpData').modal('hide');
+					alert("Error: " + jqXHR.status);
+				}
+		});
+	});
+	
 	$('.mp-data-table').DataTable();
 
-	$(".delete-data").click( function(e){
+	$(".mp-data-table").on('click', ".delete-mp-data", function(e){
 		/*
-		 * Write code to delete mp data. 
+		 * Write code to delete mp data.
+		 * Row will be deleted based on id 
 		 * */
+		var url = window.location.origin + '/api/v1/mpattendence/'+$(this).data("id")+'?format=json';	
+		$.ajax({
+			url: url,
+			method: "DELETE",
+			success: function(){
+				alert("Success: Delete successfuly");
+				location.reload();
+			},
+			error: function(jqXHR){
+				alert("Error: " + jqXHR.status);
+			}
+		});
 	});
 	
 	$(".edit-mp-data").click( function(e){
@@ -24,22 +69,13 @@ $(document).ready(function(){
 		 * */
 	});
 	
-	$('.submit-mp-data').click(function(e) {
-		e.preventDefault();
-		console.log(getFromData('.create-mp-data-form'));
-	    /*
-	     * Make a ajax call to rest api to save data
-	     * 
-	     * */
-	});
-	
 	$(".filter-results").submit(function(e) {
 		e.preventDefault();
-		console.log(getFromData('.filter-results'));
-	    /*
-	     * Make a ajax call to rest Fiter data
-	     * 
-	     * */
+		var	header = {"content_types": "application/json"},
+			data = getFromData('.filter-results'),
+			url_params = make_url_params(data);
+		
+		location.assign(window.location.origin + url_params);
 	});
 	
 });

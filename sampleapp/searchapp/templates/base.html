@@ -19,14 +19,14 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" href="#">Brand</a>
+		      <a class="navbar-brand" href="#">SampleApp</a>
 		    </div>
 		
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <div class="create-task-btn">
 			  	<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#addMpData">
-				  Add MP Data
+				  + Add MP Data
 				</button>
 			  </div>
 		    </div><!-- /.navbar-collapse -->
@@ -38,7 +38,7 @@
     	<div class="well">
     		<form class="form-inline filter-results">
 			  	<div class="form-group">
-			    	<label>Member Name</label>
+			    	<label>Name</label>
 			    	<input type="text" name="member_name" class="form-control" placeholder="Member Name">
 			  	</div>
 			  	<div class="form-group">
@@ -51,10 +51,16 @@
 			  	</div>
 			  	<div class="form-group">
 			    	<label>Lok Sabha</label>
-			    	<input type="text" name="lok_sabha" class="form-control" placeholder="Lok Sabha">
+			    	<input type="number" name="lok_sabha" class="form-control" placeholder="Lok Sabha">
 			  	</div>
 			  	<button type="submit" class="btn btn-primary submit-form">Search</button>
 			</form>
+			
+			<div class="filter-params">
+				{% if params_dict %}
+				Showing Results for : {{params_dict}}
+				{% endif %}
+			</div>
     	</div>
     	<table class="table mp-data-table">	
     		<thead>
@@ -81,7 +87,7 @@
 		    			<td>{{data.total_seats}}</td>
 		    			<td>
 		    				<i class="glyphicon glyphicon-pencil edit-mp-data"></i>|
-		    				<i data-toggle="modal" data-target="#deleteMpData" class="glyphicon glyphicon-remove delete-mp-data"></i>
+		    				<i data-id="{{data.id}}" class="glyphicon glyphicon-remove delete-mp-data"></i>
 		    			</td>
 		    		</tr>
 	    		{% endfor %}
